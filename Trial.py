@@ -118,7 +118,7 @@ def extractSubdomains(url, subdomains_output, links_output):
         subdomains_output.write(link + "\t" + "Code: " + str(status_code) + "\n" )
         subdomains_output.flush() ##forces lines to be written to file even with interruption
 
-        
+
 
 if(sys.argv[1]):
 
@@ -128,22 +128,27 @@ if(sys.argv[1]):
 
         (main_url, pre_url, post_url) = fixUrls(main_url)
 
-    with open("./subdomains_output.bat", 'a') as subdomains_file:
+        with open("./subdomains_output.bat", 'a') as subdomains_file:
 
-        with open("./dirs_output.bat", 'w') as dirs_files_file:
+            with open("./dirs_output.bat", 'w') as dirs_files_file:
 
-            with open("./links_output.bat", 'w') as links_file:
+                with open("./links_output.bat", 'w') as links_file:
 
-                extractLinks(main_url, links_file)
+                    extractLinks(main_url, links_file)
 
-                with open("input_files(1)/dirs_dictionary.bat", "r") as directories:
+                    with open("input_files(1)/dirs_dictionary.bat", "r") as directories:
 
-                    for dir in directories.readlines():
+                        for dir in directories.readlines():
                                     
-                        extractDirectories(dir, dirs_files_file, links_file)
+                            extractDirectories(dir, dirs_files_file, links_file)
 
-                with open("input_files(1)/subdomains_dictionary.bat", "r") as subs:
+                    with open("input_files(1)/subdomains_dictionary.bat", "r") as subs:
 
-                                for sub in subs.readlines():
+                        for sub in subs.readlines():
                                     
-                                    extractSubdomains(sub, subdomains_file, links_file)
+                            extractSubdomains(sub, subdomains_file, links_file)
+    else:
+         print("Invalid URL")
+else:
+     print("No Argument Provided")
+    
