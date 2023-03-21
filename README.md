@@ -71,9 +71,9 @@ What you want to receive is a status code between 200 and 299 indicating a succe
 You may also care about 403 error code which means that you found said directory or file but the access is denied. One of the difficulties you might face is trying to extract the links from this url. You won't be able to as the access is denied. 
 One error you might face is an error code of 429, which occurs when too many requests are sent in a short period of time. In this case, you won't be able to extract the html.
 3. Store the subdomains that had a status code between 200 and 299 or 403.
+<br>
+Now that you have functions to extract links, files and directories, and subdomains, it's time to execute the code. You will use the previously implemented functions on a list of already existing and known files, directories and subdomains. It's better to extract these and store the files and directories in a file, and the subdomains in another. You will have to loop throught the files and send continuous requests to make extract the information.
 
-5. Now that you have functions to extract links, files and directories, and subdomains, it's time to execute the code. You will use the previously implemented functions on a list of already existing and known files, directories and subdomains. It's better to extract these and store the files and directories in a file, and the subdomains in another. You will have to loop throught the files and send continuous requests to make extract the information.
-
-6. The sys library that was previously imported will be used to extract the shell script arguments. The code can be executed by using the python3 [filename] [url] in the shell. To access the master url in the Python script, you will need to use: sys.argv[1].
+The sys library that was previously imported will be used to extract the shell script arguments. The code can be executed by using the python3 [filename] [url] in the shell. To access the master url in the Python script, you will need to use: sys.argv[1].
 
 ## Congrats! Now you have a Python script capable of extracting links, files, directories and subdomains from a target url that you chose. Use it wisely.
