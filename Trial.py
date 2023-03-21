@@ -41,3 +41,24 @@ def fixUrls(main_url):
     post_url = re.sub("www\.", "", components[1])
     
     return (main_url, pre_url, post_url)
+
+def extractLinks(main_url,links_output):
+
+    request = urllib.request.Request(url=main_url, headers={'User-Agent': 'Mozilla/5.0'})    
+    websiteUrl = urllib.request.urlopen(request)
+
+    link_pattern = r'href="[^#\"]{2,}?"'
+
+    refs = re.findall(link_pattern, websiteUrl.read().decode())
+
+    web_pattern = r'".*"'
+
+    links_output.write(main_url + ":\n\n")
+
+    for ref in refs:
+        ref = re.findall(web_pattern, ref)[0][1:-1]
+        links_output.write("\t" + ref + "\n")
+        links_output.flush()
+       
+
+    links_output.write("\n")
