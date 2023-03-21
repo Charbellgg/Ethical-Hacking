@@ -87,6 +87,38 @@ def extractDirectories(url, dirs_files_output, links_output):
         dirs_files_output.write(main_url + "\t" + "Code: " + str(status_code) + "\n" )
         dirs_files_output.flush() ##forces lines to be written to file even with interruption
 
+def extractSubdomains(url, subdomains_output, links_output):
+    
+            
+    link = pre_url + url.rstrip('\n') + "." + post_url
+        
+    try: ##making sure that the status code is valid to avoid error
+            
+        status_code = requests.get(link).status_code
+
+    except:
+
+            status_code = 404
+
+    if status_code == 404:
+
+            print('Subdomain does not exist: ' + url.rstrip('\n'))
+
+    elif status_code // 100 == 2: ##subdomain exists
+
+        print('Subdomain does exist: ' + url.rstrip('\n') + " " + "Code: " + str(status_code)) 
+        extractLinks(link, links_output)
+        subdomains_output.write(link + "\t" + "Code: " + str(status_code) + "\n" )
+        subdomains_output.flush() ##forces lines to be written to file even with interruption
+       
+
+    elif status_code == 403: ##subdomain exists but the access is denied
+                
+        print('Subdomain does exist: ' + url.rstrip('\n') + " " +  "Code: " + str(status_code)) 
+        subdomains_output.write(link + "\t" + "Code: " + str(status_code) + "\n" )
+        subdomains_output.flush() ##forces lines to be written to file even with interruption
+
+        
 
 if(sys.argv[1]):
 
@@ -95,6 +127,8 @@ if(sys.argv[1]):
     if(validateUrl(main_url)): 
 
         (main_url, pre_url, post_url) = fixUrls(main_url)
+
+    with open("./subdomains_output.bat", 'a') as subdomains_file:
 
         with open("./dirs_output.bat", 'w') as dirs_files_file:
 
@@ -107,3 +141,9 @@ if(sys.argv[1]):
                     for dir in directories.readlines():
                                     
                         extractDirectories(dir, dirs_files_file, links_file)
+
+                with open("input_files(1)/subdomains_dictionary.bat", "r") as subs:
+
+                                for sub in subs.readlines():
+                                    
+                                    extractSubdomains(sub, subdomains_file, links_file)
