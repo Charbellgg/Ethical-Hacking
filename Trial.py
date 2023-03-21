@@ -58,7 +58,52 @@ def extractLinks(main_url,links_output):
     for ref in refs:
         ref = re.findall(web_pattern, ref)[0][1:-1]
         links_output.write("\t" + ref + "\n")
-        links_output.flush()
+        links_output.flush() ##forces lines to be written to file even with interruption
        
 
     links_output.write("\n")
+
+
+def extractDirectories(url, dirs_files_output, links_output):
+            
+    status_code = requests.get(main_url + url.rstrip('\n')).status_code
+    if status_code == 404:
+            
+            print('Directory or File does not exist: ' + url.rstrip('\n'))
+
+    elif status_code // 100 == 2: ##directory/file exist
+         
+         print('Directory or File does exist: ' + url.rstrip('\n') + "Code: " + str(status_code)) 
+                
+         extractLinks(main_url + url.rstrip('\n'), links_output)
+
+         dirs_files_output.write(main_url + url.rstrip('\n') + "\t" + "Code: " + str(status_code) + "\n" )
+         dirs_files_output.flush() ##forces lines to be written to file even with interruption
+            
+    elif status_code == 403: ##directory/file exists but the access is denied
+          
+        print('Directory/File does exist: ' + url.rstrip('\n') + "Code: " + str(status_code)) 
+
+        dirs_files_output.write(main_url + "\t" + "Code: " + str(status_code) + "\n" )
+        dirs_files_output.flush() ##forces lines to be written to file even with interruption
+
+
+if(sys.argv[1]):
+
+    main_url = sys.argv[1]
+    
+    if(validateUrl(main_url)): 
+
+        (main_url, pre_url, post_url) = fixUrls(main_url)
+
+        with open("./dirs_output.bat", 'w') as dirs_files_file:
+
+            with open("./links_output.bat", 'w') as links_file:
+
+                extractLinks(main_url, links_file)
+
+                with open("input_files(1)/dirs_dictionary.bat", "r") as directories:
+
+                    for dir in directories.readlines():
+                                    
+                        extractDirectories(dir, dirs_files_file, links_file)
